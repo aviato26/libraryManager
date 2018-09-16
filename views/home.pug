@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title Library Manager
+    style
+      include ../stylesheets/style.css
+
+  nav
+    ul
+      li
+        a(href='all_books.pug') Books
+      li
+        a(href='all_patrons.pug') Patrons
+      li
+        a(href='all_loans.pug') Loans
+
+  body
+    h1 Library Manager
+    p Welcome to Library Manager
+    ul
+      li Books
+        ul
+          li
+            a(href='/books/new') New Books
+          li
+            a(href='')
