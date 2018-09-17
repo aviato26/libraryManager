@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title Books
+    style
+      include ../stylesheets/style.css
+
+  include navigation.pug
+
+  body
+    h1 Checked Out Books
+    p
+      a(href='new_book.pug' class='button') Create New Book
+      p Filters #{''}
+        a(href='all_books.pug') All | #{''}
+        a(href='overdue_books.pug') Overdue | #{''}
+        a(href='checked_books.pug') Checked Out |
+
+    table
+      thead
+        tr
+          th Title
+          th Author
+          th Genre
+          th Year Released
+
+      tbody
+        tr
+          td
+            a(href='detail.pug')

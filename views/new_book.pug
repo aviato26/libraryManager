@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title New Book
+    style
+      include ../stylesheets/style.css
+
+  include navigation.pug
+
+  body
+    h1 New Books
+    form
+      p
+        label(for='title') Title
+          input(id='title' type='text')
+      p
+        label(for='author') Author
+          input(id='author' type='text')
+      p
+        label(for='genre') Genre
+          input(id='genre' type='text')
+      p
+        label(for='first_published') First Published
+          input(id='first_published' type='text')
+      p
+        input(id='submit' value='Create New Book')

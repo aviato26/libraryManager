@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title Loans
+    style
+      include ../stylesheets/style.css
+
+  include navigation.pug
+
+  body
+    h1 Loans
+
+    p
+      a(href='new_loan.pug' class='button') Create New Loan
+    p
+      a(href='all_loans.pug') All | #{''}
+      a(href='overdue_loans.pug') Overdue | #{''}
+      a(href='checked_loans.pug') Checked Out
+
+    table
+      thead
+        tr
+          th Book
+          th Patron
+          th Loaned on
+          th Return by
+          th Returned on
+          th Action
+      tbody
+        tr

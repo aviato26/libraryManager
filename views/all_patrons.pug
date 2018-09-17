@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title Patrons
+    style
+      include ../stylesheets/style.css
+
+  include navigation.pug
+
+  body
+    h1 Patrons
+    p
+      a(href='new_patrons.pug' class='button') Create New Patron
+    table
+      thead
+        tr
+          th Name
+          th Address
+          th Email
+          th Library ID
+          th Zip
+      tbody
+        tr
