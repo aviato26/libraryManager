@@ -12,6 +12,10 @@ router.get('/all_books.pug', (req, res) => {
         filtered
       }
     )
+    console.log(req)
+    router.get('/book_detail.pug', (req, res) => {
+      res.render('../views/book_detail.pug')
+    })
   })
 })
 
