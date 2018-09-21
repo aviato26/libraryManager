@@ -28,7 +28,7 @@ html
         for books in filtered
           tr
             td
-              a(href='book_detail.pug') #{books.title}
+              a(href=`/books/${books.id}`) #{books.title}
             td #{books.author}
             td #{books.genre}
             td #{books.first_published}

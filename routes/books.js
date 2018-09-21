@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const Books = require('../models').Books
+const Books = require('../models').Books;
+const Loans = require('../models').Loans;
+const Patrons = require('../models').Patrons;
+const parser = require('body-parser');
+let sql = require('../models').sequelize;
+let details;
+let newBook;
+
+
+router.use(parser());
 
 router.get('/all_books.pug', (req, res) => {
   Books.findAll().then(notFiltered => {
@@ -12,11 +21,31 @@ router.get('/all_books.pug', (req, res) => {
         filtered
       }
     )
-    console.log(req)
-    router.get('/book_detail.pug', (req, res) => {
-      res.render('../views/book_detail.pug')
-    })
   })
+})
+
+router.get('/books/:id', (req, res) => {
+  Books.findById(req.params.id)
+  .then((data) => {
+    details = data.dataValues;
+    res.render('../views/book_detail.pug',
+      {
+        details
+      }
+    )
+  })
+})
+
+router.post('/new_book.pug', (req, res) => {
+  newBook = Books.build({
+    title: req.body.title,
+    author: req.body.author,
+    genre: req.body.genre,
+    first_published: req.body.year
+  })
+  .save()
+  res.redirect('/all_books.pug')
+  console.log(typeof req.body.title === '')
 })
 
 router.get('/checked_books.pug', (req, res) => {
