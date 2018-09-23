@@ -7,6 +7,8 @@ const parser = require('body-parser');
 let sql = require('../models').sequelize;
 let details;
 let newBook;
+let loans;
+let patrons;
 
 
 router.use(parser());
@@ -27,13 +29,24 @@ router.get('/all_books.pug', (req, res) => {
 router.get('/books/:id', (req, res) => {
   Books.findById(req.params.id)
   .then((data) => {
-    details = data.dataValues;
+     details = data.dataValues
     res.render('../views/book_detail.pug',
       {
         details
       }
     )
   })
+})
+
+router.post('/books/:id', (req, res) => {
+  Books.findById(req.params.id)
+  .then((data) => {
+    data.update(req.body)
+  })
+  .then(() => {
+    res.redirect('/all_books.pug')
+  })
+  .catch(err => console.log(err))
 })
 
 router.post('/new_book.pug', (req, res) => {
@@ -45,7 +58,6 @@ router.post('/new_book.pug', (req, res) => {
   })
   .save()
   res.redirect('/all_books.pug')
-  console.log(typeof req.body.title === '')
 })
 
 router.get('/checked_books.pug', (req, res) => {
