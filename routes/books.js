@@ -45,7 +45,16 @@ router.post('/new_book.pug', (req, res) => {
   })
   .save()
   res.redirect('/all_books.pug')
-  console.log(typeof req.body.title === '')
+})
+
+router.put('/books/:id', (req, res) => {
+  Books.findById(req.params.id)
+  .then((data) => {
+    return books.update(req.body)
+  })
+  .then((data) => {
+    res.redirect('/all_books.pug')
+  })
 })
 
 router.get('/checked_books.pug', (req, res) => {
