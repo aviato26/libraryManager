@@ -4,7 +4,6 @@ const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
 const parser = require('body-parser');
-let sql = require('../models').sequelize;
 let details;
 let newBook;
 let loans;
@@ -27,14 +26,34 @@ router.get('/all_books.pug', (req, res) => {
 })
 
 router.get('/books/:id', (req, res) => {
-  Books.findById(req.params.id)
-  .then((data) => {
-     details = data.dataValues
-    res.render('../views/book_detail.pug',
-      {
-        details
+  Books.findAll({
+    include: [{model: Loans,include: [{model: Patrons}]}],
+    where: {id: req.params.id}
+  })
+  .then(data => {
+    if(data[0].dataValues.Loans.length === 0){
+      Books.findById(req.params.id)
+      .then(data => {
+        details = data.dataValues;
+        res.render('../views/book_detail.pug',
+          {
+            details
+          }
+        )
+      })
+    }
+      else if(data[0].dataValues.Loans.length > 0){
+        patron = data[0].dataValues.Loans[0].dataValues.Patron.dataValues;
+        loans = data[0].dataValues.Loans[0].dataValues;
+        details = data[0].dataValues;
+        res.render('../views/book_detail.pug',
+          {
+            details,
+            patron,
+            loans
+          }
+        )
       }
-    )
   })
 })
 

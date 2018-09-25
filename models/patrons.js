@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {timestamps: false, underscored: true});
   Patrons.associate = function(models) {
     // associations can be defined here
+    Patrons.hasMany(models.Loans, {foreignKey: 'book_id'})
   };
   return Patrons;
 };

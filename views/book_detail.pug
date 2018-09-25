@@ -37,8 +37,14 @@ html
           th Action
 
       tbody
+      if loans
         tr
           td
-            a(href='book_detail.pug') #{details.title}
+            a(href='../views/book_detail.pug') #{details.title}
           td
-            a(href='patron_detail.pug')
+            a(href=`/patron_detail/${patron.id}`) #{patron.first_name + ' ' + patron.last_name}
+          td #{loans.loaned_on}
+          td #{loans.return_by}
+          td
+          td
+            a(href='return_book.pug' class='button') Return Book
