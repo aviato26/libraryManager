@@ -27,4 +27,13 @@ html
           th Returned on
           th Action
       tbody
+      for book in filteredLoan
         tr
+          td
+            a #{book.title}
+          td
+            a #{book.firstName}
+          td #{book.loaned_on}
+          td #{book.returnBy}
+          td #{book.returnOn}
+          td
