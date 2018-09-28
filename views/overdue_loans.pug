@@ -1,15 +1,14 @@
 doctype html
 html
   head
-    title Loans
-    style
-      include ../stylesheets/style.css
+  title Overdue Loans
+  style
+    include ../stylesheets/style.css
 
   include navigation.pug
 
   body
-    h1 Loans
-
+    h1 Overdue Loans
     p
       a(href='new_loan' class='button') Create New Loan
     p
@@ -30,10 +29,10 @@ html
       each loan in data
         tr
           td
-            a(href=`/books/${loan.bookId}`) #{loan.title}
+            a(href='book_detail') #{loan.title}
           td
-            a(href=`${loan.patronId}`) #{loan.patron}
+            a(href='patron_detail') #{loan.patron}
           td #{loan.loanOn}
           td #{loan.returnBy}
-          td #{loan.returnedOn}
+          td
           td

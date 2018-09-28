@@ -6,7 +6,7 @@ const Patrons = require('../models').Patrons;
 const parser = require('body-parser');
 let patron;
 
-router.get('/all_patrons.pug', (req, res) => {
+router.get('/all_patrons', (req, res) => {
   res.render('../views/all_patrons.pug')
 })
 

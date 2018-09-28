@@ -12,7 +12,7 @@ let patrons;
 
 router.use(parser());
 
-router.get('/all_books.pug', (req, res) => {
+router.get('/all_books', (req, res) => {
   Books.findAll().then(notFiltered => {
      return notFiltered.map(c => c.dataValues)
   })
@@ -63,12 +63,12 @@ router.post('/books/:id', (req, res) => {
     data.update(req.body)
   })
   .then(() => {
-    res.redirect('/all_books.pug')
+    res.redirect('/all_books')
   })
   .catch(err => console.log(err))
 })
 
-router.post('/new_book.pug', (req, res) => {
+router.post('/new_book', (req, res) => {
   newBook = Books.build({
     title: req.body.title,
     author: req.body.author,
@@ -76,18 +76,18 @@ router.post('/new_book.pug', (req, res) => {
     first_published: req.body.year
   })
   .save()
-  res.redirect('/all_books.pug')
+  res.redirect('/all_books')
 })
 
-router.get('/checked_books.pug', (req, res) => {
+router.get('/checked_books', (req, res) => {
   res.render('../views/checked_books.pug')
 })
 
-router.get('/overdue_books.pug', (req, res) => {
+router.get('/overdue_books', (req, res) => {
   res.render('../views/overdue_books.pug')
 })
 
-router.get('/new_book.pug', (req, res) => {
+router.get('/new_book', (req, res) => {
   res.render('../views/new_book.pug')
 })
 
