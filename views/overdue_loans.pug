@@ -36,3 +36,5 @@ html
           td #{loan.returnBy}
           td
           td
+            if !loan.returnedOn
+              a(href='return_book' class='button') Return Book

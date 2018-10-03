@@ -5,11 +5,61 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    book_id: DataTypes.INTEGER,
-    patron_id: DataTypes.INTEGER,
-    loaned_on: DataTypes.DATE,
-    return_by: DataTypes.DATE,
-    returned_on: DataTypes.DATE
+
+    book_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'please enter a book'
+        }
+      }
+    },
+
+    patron_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'please enter a patron'
+        }
+      }
+    },
+
+    loaned_on: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: {
+          msg: 'please enter date'
+        },
+        notEmpty: {
+          msg: 'please enter a date'
+        }
+      }
+    },
+
+    return_by: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: {
+          msg: 'please enter date'
+        },
+        notEmpty: {
+          msg: 'please enter a date'
+        }
+      }
+    },
+
+    returned_on: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: {
+          msg: 'please enter date'
+        },
+        notEmpty: {
+          msg: 'please enter a date'
+        }
+      }
+    }
+
   }, {timestamps: false, underscored: true});
   Loans.associate = function(models) {
     // associations can be defined here

@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       author: {
         type: DataTypes.STRING,
         validate: {
+          isAlpha: {
+            msg: 'will only accept letters'
+          },
           notEmpty: {
             msg: 'please enter a author'
           }
@@ -24,12 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       genre: {
         type: DataTypes.STRING,
         validate: {
+          isAlpha: {
+            msg: 'will only accept letters'
+          },
           notEmpty: {
             msg: 'please enter a genre'
           }
         }
       },
-      first_published: DataTypes.INTEGER
+
+      first_published: {
+        type: DataTypes.INTEGER
+      }
     },
     {
       timestamps: false,

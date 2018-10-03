@@ -25,6 +25,10 @@ html
           th Year Released
 
       tbody
-        tr
-          td
-            a(href='detail')
+        each book in books
+          tr
+            td
+              a(href=`/books/${book.dataValues.id}`) #{book.dataValues.title}
+            td #{book.dataValues.author}
+            td #{book.genre}
+            td #{book.first_published}

@@ -1,27 +1,27 @@
 doctype html
 html
   head
-    title #{details.title}
+    title #{book.title}
     style
       include ../stylesheets/style.css
 
   include navigation.pug
 
   body
-    h1 Book: #{details.title}
+    h1 Book: #{book.title}
     form(method='post')
       p
         label(for='title') Title
-          input(id='title' name='title' type='text' value=`${details.title}` required)
+          input(id='title' name='title' type='text' value=`${book.title}` required)
       p
         label(for='author') Author
-          input(id='author' name='author' type='text' value=`${details.author}` required)
+          input(id='author' name='author' type='text' value=`${book.author}` required)
       p
         label(for='genre') Genre
-          input(id='genre' name='genre' type='text' value=`${details.genre}` required)
+          input(id='genre' name='genre' type='text' value=`${book.genre}` required)
       p
         label(for='first_published') First Published
-          input(id='first_published' name='first_published' type='text' value=`${details.first_published}`)
+          input(id='first_published' name='first_published' type='text' value=`${book.first_published}`)
       p
         input(type='submit' value='Update')
 
@@ -37,14 +37,15 @@ html
           th Action
 
       tbody
-      if loans
-        tr
-          td
-            a(href='../views/book_detail') #{details.title}
-          td
-            a(href=`/patron_detail/${patron.id}`) #{patron.first_name + ' ' + patron.last_name}
-          td #{loans.loaned_on}
-          td #{loans.return_by}
-          td
-          td
-            a(href='return_book.pug' class='button') Return Book
+        each loan in loans
+          tr
+            td
+              a(href=`/books/${book.id}`) #{loan.title}
+            td
+              a(href=`/patron_detail/${loan.patron_id}`) #{loan.patron}
+            td #{loan.loaned_on}
+            td #{loan.return_by}
+            td #{loan.returned_on}
+            if !loan.returned_on
+              td
+                a(href=`/return_book/${loan.loan_id}` class='button') Return Book

@@ -23,38 +23,51 @@ router.get('/all_books', (req, res) => {
       }
     )
   })
+  .catch(err => console.log(err))
 })
 
 router.get('/books/:id', (req, res) => {
-  Books.findAll({
-    include: [{model: Loans,include: [{model: Patrons}]}],
-    where: {id: req.params.id}
+  let book = {};
+
+  Books.findById(req.params.id)
+  .then(data => {
+      book.id = data.dataValues.id;
+      book.title = data.dataValues.title;
+      book.author = data.dataValues.author;
+      book.genre = data.dataValues.genre;
+      book.first_published = data.dataValues.first_published;
+      book.loan = {};
   })
   .then(data => {
-    if(data[0].dataValues.Loans.length === 0){
-      Books.findById(req.params.id)
-      .then(data => {
-        details = data.dataValues;
-        res.render('../views/book_detail.pug',
-          {
-            details
-          }
-        )
+    Loans.findAll({
+      where: {
+        book_id: book.id
+      },
+      include: [{model: Patrons}]
+    })
+    .then(loans => {
+      return loans.map(c => {
+        return {
+          title: book.title,
+          loan_id: c.dataValues.id,
+          patron_id: c.dataValues.Patron.dataValues.id,
+          patron: `${c.dataValues.Patron.dataValues.first_name} ${c.dataValues.Patron.dataValues.last_name}`,
+          loaned_on: c.dataValues.loaned_on,
+          return_by: c.dataValues.return_by,
+          returned_on: c.dataValues.returned_on
+        }
       })
-    }
-      else if(data[0].dataValues.Loans.length > 0){
-        patron = data[0].dataValues.Loans[0].dataValues.Patron.dataValues;
-        loans = data[0].dataValues.Loans[0].dataValues;
-        details = data[0].dataValues;
-        res.render('../views/book_detail.pug',
-          {
-            details,
-            patron,
-            loans
-          }
-        )
-      }
+    })
+    .then(loans => {
+      res.render('../views/book_detail.pug',
+        {
+          book,
+          loans
+        }
+      )
+    })
   })
+  .catch(err => console.log(err))
 })
 
 router.post('/books/:id', (req, res) => {
@@ -77,14 +90,55 @@ router.post('/new_book', (req, res) => {
   })
   .save()
   res.redirect('/all_books')
+  .catch(err => console.log(err))
 })
 
 router.get('/checked_books', (req, res) => {
-  res.render('../views/checked_books.pug')
+  Loans.findAll({
+    include: [
+      {model: Books}
+    ]
+  })
+  .then(data => {
+    return data.filter(item => item.dataValues.returned_on === null)
+    })
+    .then(data => {
+      return data.map(c => c.dataValues.Book)
+    })
+    .then(book => {
+    res.render('../views/checked_books.pug',
+      {
+        book
+      }
+    )
+  })
+  .catch(err => console.log(err))
 })
 
 router.get('/overdue_books', (req, res) => {
-  res.render('../views/overdue_books.pug')
+  Loans.findAll({
+    include: [
+      {model: Books}
+    ]
+  })
+  .then(data => {
+    return data.filter(c => {
+      let due = new Date(c.dataValues.return_by)
+      let today = new Date()
+      return ((today >= due) && (c.dataValues.returned_on === null)) ? true : false;
+    })
+  })
+  .then(data => {
+    return data.map(c => c.dataValues.Book)
+  })
+  .then(books => {
+    res.render('../views/overdue_books.pug',
+      {
+        books
+      }
+    )
+  })
+  .catch(err => console.log(err))
 })
 
 router.get('/new_book', (req, res) => {

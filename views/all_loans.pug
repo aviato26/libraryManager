@@ -12,7 +12,7 @@ html
 
     p
       a(href='new_loan' class='button') Create New Loan
-    p
+    p Filters #{''}
       a(href='all_loans') All | #{''}
       a(href='overdue_loans') Overdue | #{''}
       a(href='checked_loans') Checked Out
@@ -32,8 +32,10 @@ html
           td
             a(href=`/books/${loan.bookId}`) #{loan.title}
           td
-            a(href=`${loan.patronId}`) #{loan.patron}
+            a(href=`/patron_detail/${loan.patronId}`) #{loan.patron}
           td #{loan.loanOn}
           td #{loan.returnBy}
           td #{loan.returnedOn}
           td
+            if !loan.returnedOn
+              a(href=`return_book/${loan.loanId}` class='button') Return Book

@@ -20,4 +20,11 @@ html
           th Library ID
           th Zip
       tbody
-        tr
+        each pat in data
+          tr
+            td
+              a(href=`/patron_detail/${pat.id}`) #{pat.first_name} #{pat.last_name}
+            td #{pat.address}
+            td #{pat.email}
+            td #{pat.library_id}
+            td #{pat.zip_code}

@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+  title New Loan
+  style
+    include ../stylesheets/style.css
+
+  include navigation
+
+  body
+    h1 New Loan
+    form(method='post')
+      p
+        label(for='book_id') Book
+          select(id='book_id' name='book' required)
+            each loan in books
+              option #{loan.title}
+      p
+        label(for='patron_id') Patron
+          select(id='patron_id' name='patron' required)
+            each loan in patrons
+              option #{loan.first_name + ' ' + loan.last_name}
+      p
+        label(for='loaned_on') Loaned on:
+          input(id='loaned_on' type='text' value=`${date.toISOString().slice(0,10)}` name='loanedOn' required)
+      p
+        label(for='return_by') Return by:
+          input(id='return_by' type='text' value=`${new Date(date.setDate(date.getDate() + 7)).toISOString().slice(0,10)}` name='returnBy' required)
+      p
+        input(type='submit')
