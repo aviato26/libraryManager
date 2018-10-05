@@ -4,6 +4,7 @@ const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
 const parser = require('body-parser');
+const moment = require('moment');
 
 let loanObj = (data) => {
   return data.map(c => {
@@ -183,10 +184,14 @@ router.post('/new_loan', (req, res) => {
   router.post('/return_book/:id', (req, res) => {
     Loans.findById(req.params.id)
     .then(loan => {
-      loan.update({returned_on: req.body.date})
+      if(moment(req.body.date, 'YYYY-MM-DD', true).isValid()){
+        loan.update({returned_on: req.body.date})
+      } else {
+        console.log('please enter a valid date')
+      }
     })
     .then(() => res.redirect('/all_loans'))
-    .catch(err => console.log(err))
+  .catch(err => console.log(err))
   })
 
 module.exports = router;
