@@ -182,16 +182,17 @@ router.post('/new_loan', (req, res) => {
 
 
   router.post('/return_book/:id', (req, res) => {
-    Loans.findById(req.params.id)
-    .then(loan => {
-      if(moment(req.body.date, 'YYYY-MM-DD', true).isValid()){
-        loan.update({returned_on: req.body.date})
-      } else {
-        console.log('please enter a valid date')
-      }
+    if(moment(req.body.date, 'YYYY-MM-DD', true).isValid()){
+        Loans.findById(req.params.id)
+        .then(loan => {
+          loan.update({returned_on: req.body.date})
+        })
+        .then(() => res.redirect('/all_loans'))
+    }
+    else {
+      res.redirect('/all_loans')
+      throw Error('please enter date in YYYY-MM-DD format')
+    }
     })
-    .then(() => res.redirect('/all_loans'))
-  .catch(err => console.log(err))
-  })
 
 module.exports = router;
